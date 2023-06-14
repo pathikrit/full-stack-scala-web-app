@@ -10,7 +10,9 @@ import scalatags._
 import java.text.NumberFormat
 import java.util.Locale
 
-class App(val title: String, id: String) extends framework.Page(id) {
+object App extends framework.Page("calculator") {
+  val id                     = "Calculator"
+  val title                  = "Calculator"
   def inputs: List[Modifier] = Nil
 
   def onChange(): Any = {}
@@ -28,11 +30,11 @@ class App(val title: String, id: String) extends framework.Page(id) {
     )
   }
 
-  def renderNavBar: Modifier =
-    navbar(title)(App.registry.map({ app => app.title -> app.route }): _*)
+//  def renderNavBar: Modifier =
+//    navbar(title)(App.registry.map({ app => app.title -> app.route }): _*)
 
   override def renderBody =
-    body(renderNavBar, renderForm)
+    body(renderForm)
 
   def inputRange(
       label: String,
@@ -110,15 +112,4 @@ class App(val title: String, id: String) extends framework.Page(id) {
 
   def style(styles: String*): Style =
     `class` := styles.mkString(" ")
-}
-
-object App {
-  val registry: Seq[App] = Seq(
-    AnnuityCalculator,
-  )
-
-  def route(path: String): doctype =
-    registry
-      .collectFirst({ case app if app.route == path => app.renderDoc })
-      .getOrElse(new App(s"Missing app $path", "not_found").renderDoc)
 }
