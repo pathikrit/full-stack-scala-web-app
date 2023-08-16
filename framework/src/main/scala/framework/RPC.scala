@@ -10,6 +10,8 @@ import scala.util.{Failure, Success, Try}
 class RPC[I: ReadWriter, O: ReadWriter](path: String) { self =>
   val fragments = path.stripPrefix("/").stripSuffix("/").split("/").toSeq
 
+  def inputValidator: Validation[I] = Validation.empty
+
   def apply(input: I)(implicit ec: ExecutionContext): Future[O] =
     inputValidator(input) match {
       case Left(violations) => Future.failed(new IllegalArgumentException(violations.mkString("\n")))
@@ -40,8 +42,6 @@ class RPC[I: ReadWriter, O: ReadWriter](path: String) { self =>
         }
     }
   }
-
-  def inputValidator: Validation[I] = Validation.empty
 }
 
 object RPC {

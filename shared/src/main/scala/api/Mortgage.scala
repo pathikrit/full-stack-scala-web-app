@@ -9,10 +9,8 @@ object Mortgage {
 
   object API {
     val monthlyPayments = new RPC[Mortgage, List[Double]]("/mortgage/payments")
-    val combine = new RPC[(Mortgage, Mortgage), Mortgage]("/mortgage/combine")
+    val combine         = new RPC[(Mortgage, Mortgage), Mortgage]("/mortgage/combine")
   }
 }
-
-
 
 // TODO: Validator here
