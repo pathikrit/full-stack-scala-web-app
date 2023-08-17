@@ -1,6 +1,6 @@
 package framework
 
-import io.udash.wrappers.jquery._
+//import io.udash.wrappers.jquery._
 
 import scalajs.js.annotation.JSExport
 import scalatags.Text.all._
@@ -8,7 +8,6 @@ import scalatags.Text.all._
 import scalacss.DevDefaults._
 //import scalacss.ScalatagsCss._
 
-import scala.collection.mutable
 
 abstract class Page(name: String) {
   implicit val ec = scala.concurrent.ExecutionContext.global
@@ -37,6 +36,11 @@ abstract class Page(name: String) {
     JsLibs.bootstrap.js,
   )
 
+  def scripts: List[Modifier] = jsLibs ++ List(
+    script(src := "/js/main.js"),
+    script(s"$name.init()"),
+  )
+
   def kv(kvs: (String, Any)*): String = kvs.map({ case (k, v) => s"$k=$v" }).mkString(", ")
 
   def renderHead: Tag = head(
@@ -47,23 +51,6 @@ abstract class Page(name: String) {
 
   def renderBody: Tag
 
-  private val initBuffer  = mutable.Buffer.empty[() => Any]
-  private val initScripts = mutable.Buffer(s"$name.init()")
-
-  def scripts: List[Tag] =
-    jsLibs ++ List(script(src := "/js/main.js"), script((initScripts.mkString(";\n"))))
-
-  def addScript(js: String): Unit =
-    initScripts += js.trim
-
-  def registerHandler(id: String, on: EventName, onLoad: Boolean)(callback: () => Any): Unit = {
-    initBuffer += { () => jQ(s"#$id").on(event = on, callback = (_, _) => callback()) }
-    if (onLoad) initBuffer += { () => jQ(callback) }
-  }
-
   @JSExport
-  final def init(): Unit = {
-    require(renderDoc.toString.nonEmpty) // This exists to trigger initBuffer population before compilation to JS
-    initBuffer.foreach(_.apply())
-  }
+  def init(): Unit
 }
