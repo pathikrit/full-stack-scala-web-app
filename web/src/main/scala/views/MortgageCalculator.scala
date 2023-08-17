@@ -36,6 +36,9 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
 
   @nowarn
   def calc(element: Element, event: JQueryEvent) = {
-    $("#output").text("hello")
+    import api.Mortgage
+    for {
+      res <- Mortgage.API.monthlyPayments(Mortgage(10000, 3, 30))
+    } $("#output").text(res.mkString(","))
   }
 }

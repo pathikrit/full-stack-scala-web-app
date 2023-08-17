@@ -51,6 +51,5 @@ abstract class Page(name: String) {
 
   def renderBody: Tag
 
-  @JSExport
-  def init(): Any
+  @JSExport def init(): Any
 }
