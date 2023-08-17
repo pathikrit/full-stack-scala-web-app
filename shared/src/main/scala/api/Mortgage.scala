@@ -2,7 +2,7 @@ package api
 
 import framework.RPC
 
-case class Mortgage(principal: Double, apr: Double, years: Int)
+case class Mortgage(amount: Double, apr: Double, years: Int)
 object Mortgage {
   import upickle.default._
   implicit val rw: ReadWriter[Mortgage] = macroRW

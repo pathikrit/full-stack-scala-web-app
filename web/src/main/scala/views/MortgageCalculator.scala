@@ -15,7 +15,7 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     div(`class` := "container card w-25 mt-5 p-3")(
       h3("Mortgage Calculator"),
       t.form(t.id := "calculator")(
-        input("Loan Amount ($)", id = "amount", default = 1e6.toInt),
+        input("Loan Amount ($)", id = "loan", default = 1e6.toInt),
         input("APR (%)", id = "apr", default = 5),
         input("Mortgage Period (years)", id = "years", default = 30),
         button("Calculate", id := "calc_payments", `type` := "button", `class` := "btn btn-primary"),
@@ -38,7 +38,11 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
   def calc(element: Element, event: JQueryEvent) = {
     import api.Mortgage
     for {
-      res <- Mortgage.API.monthlyPayments(Mortgage(10000, 3, 30))
+      amount <- $("#loan").value().asInstanceOf[String].toIntOption
+      apr <- $("#apr").value().asInstanceOf[String].toFloatOption
+      years <- $("#years").value().asInstanceOf[String].toIntOption
+      mortgage = Mortgage(amount = amount, apr = apr, years = years)
+      res <- Mortgage.API.monthlyPayments(mortgage)
     } $("#output").text(res.mkString(","))
   }
 }
