@@ -5,7 +5,7 @@ import api.Mortgage
 object MortgageApiImpl {
   def payments(m: Mortgage): List[Double] = {
     println(s"payments($m)")
-    Nil
+    List(0, 1)
   }
 
   def combine(a: Mortgage, b: Mortgage): Mortgage = {

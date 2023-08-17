@@ -4,9 +4,9 @@ import io.udash.wrappers.jquery._
 
 import scalajs.js.annotation.JSExport
 import scalatags.Text.all._
-import scalatags.Text.TypedTag
+//import scalatags.Text.TypedTag
 import scalacss.DevDefaults._
-import scalacss.ScalatagsCss._
+//import scalacss.ScalatagsCss._
 
 import scala.collection.mutable
 
@@ -27,32 +27,30 @@ abstract class Page(name: String) {
     )
   }
 
-  def cssLibs: List[Modifier] = List(
+  def cssLibs: List[Tag] = List(
     JsLibs.bootstrap.css,
-    JsLibs.bootstrap_slider.css,
-    styles.map(_.render[TypedTag[String]]),
+    //styles.map(_.render[TypedTag[String]]),
   )
 
-  def jsLibs: List[Modifier] = List(
+  def jsLibs: List[Tag] = List(
     JsLibs.jquery,
     JsLibs.bootstrap.js,
-    JsLibs.bootstrap_slider.js,
   )
 
   def kv(kvs: (String, Any)*): String = kvs.map({ case (k, v) => s"$k=$v" }).mkString(", ")
 
-  def renderHead: Modifier = head(
+  def renderHead: Tag = head(
     meta(charset := "utf-8"),
     meta(attr("name") := "viewport", content := kv("width" -> "device-width", "initial-scale" -> "1")), // required by Bootstrap
     cssLibs,
   )
 
-  def renderBody: Modifier
+  def renderBody: Tag
 
   private val initBuffer  = mutable.Buffer.empty[() => Any]
   private val initScripts = mutable.Buffer(s"$name.init()")
 
-  def scripts: List[Modifier] =
+  def scripts: List[Tag] =
     jsLibs ++ List(script(src := "/js/main.js"), script((initScripts.mkString(";\n"))))
 
   def addScript(js: String): Unit =

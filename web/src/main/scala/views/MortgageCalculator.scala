@@ -16,7 +16,7 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     ),
   )
 
-  def input(label: String, prefix: String = "", suffix: String = "") = {
+  def input(label: String, prefix: String = "", suffix: String = ""): Tag = {
     val id = label.replaceAll("\\s", "_").toLowerCase
     div(`class` := "mb-3")(
       t.label(label, `for` := id, `class` := "col-form-label"),
