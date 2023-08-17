@@ -2,11 +2,10 @@ package views
 
 import scalatags.Text.all._
 
-import scala.scalajs.js.annotation.JSExportTopLevel
-//import org.scalajs.dom._
+import scala.annotation.nowarn
+import scalajs.js.annotation.JSExportTopLevel
 import org.scalajs.dom.raw._
 import scalatags.Text.{all => t}
-//import scalatags.Text.all._
 
 import io.udash.wrappers.jquery.{jQ => $, _}
 
@@ -19,7 +18,7 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
         input("Loan Amount ($)", id = "amount", default = 1e6.toInt),
         input("APR (%)", id = "apr", default = 5),
         input("Mortgage Period (years)", id = "years", default = 30),
-        button("Calculate", id := "calc_payments", `class` := "btn btn-primary text-center"),
+        button("Calculate", id := "calc_payments", `type` := "button", `class` := "btn btn-primary"),
         tag("output")(id := "output")
       ),
     ),
@@ -32,11 +31,11 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     )
 
   override def init() = {
-    val _ = $("#calc_payments").on("click", calc)
+    $("#calc_payments").on("click", calc)
   }
 
+  @nowarn
   def calc(element: Element, event: JQueryEvent) = {
-    println((element, event))
     $("#output").text("hello")
   }
 }
