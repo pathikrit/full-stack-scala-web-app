@@ -19,15 +19,15 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
         input("APR (%)", id = "apr", default = 5),
         input("Mortgage Period (years)", id = "years", default = 30),
         button("Calculate", id := "calc_payments", `type` := "button", `class` := "btn btn-primary"),
-        tag("output")(id := "output")
+        tag("output")(id       := "output"),
       ),
     ),
   )
 
   def input(label: String, id: String, default: Int): Tag =
-    div(`class` := "mb-3")(
-      t.label(label, `for` := id, `class` := "col-form-label"),
-      t.input(value := default, t.id := id, `type` := "number", `class` := "form-control"),
+    div(`class`            := "mb-3")(
+      t.label(label, `for` := id, `class`   := "col-form-label"),
+      t.input(value        := default, t.id := id, `type` := "number", `class` := "form-control"),
     )
 
   override def init() = {
@@ -39,10 +39,10 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     import api.Mortgage
     for {
       amount <- $("#loan").value().asInstanceOf[String].toIntOption
-      apr <- $("#apr").value().asInstanceOf[String].toFloatOption
-      years <- $("#years").value().asInstanceOf[String].toIntOption
+      apr    <- $("#apr").value().asInstanceOf[String].toFloatOption
+      years  <- $("#years").value().asInstanceOf[String].toIntOption
       mortgage = Mortgage(amount = amount, apr = apr, years = years)
-      res <- Mortgage.API.monthlyPayments(mortgage)
+      res <- Mortgage.API.schedule(mortgage)
     } $("#output").text(res.mkString(","))
   }
 }

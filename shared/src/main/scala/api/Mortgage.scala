@@ -1,16 +1,20 @@
 package api
 
 import framework.RPC
+import upickle.default._
 
 case class Mortgage(amount: Double, apr: Double, years: Int)
 object Mortgage {
-  import upickle.default._
   implicit val rw: ReadWriter[Mortgage] = macroRW
+  // TODO: Validator here
 
   object API {
-    val monthlyPayments = new RPC[Mortgage, List[Double]]("/mortgage/payments")
-    val combine         = new RPC[(Mortgage, Mortgage), Mortgage]("/mortgage/combine")
+    val schedule = new RPC[Mortgage, Seq[Payment]]("/mortgage/schedule")
+    val combine  = new RPC[(Mortgage, Mortgage), Mortgage]("/mortgage/combine")
   }
 }
 
-// TODO: Validator here
+case class Payment(principal: Double, interest: Double, balance: Double)
+object Payment {
+  implicit val rw: ReadWriter[Payment] = macroRW
+}

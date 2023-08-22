@@ -8,7 +8,6 @@ import scalatags.Text.all._
 import scalacss.DevDefaults._
 //import scalacss.ScalatagsCss._
 
-
 abstract class Page(name: String) {
   implicit val ec = scala.concurrent.ExecutionContext.global
 
@@ -28,7 +27,7 @@ abstract class Page(name: String) {
 
   def cssLibs: List[Tag] = List(
     JsLibs.bootstrap.css,
-    //styles.map(_.render[TypedTag[String]]),
+    // styles.map(_.render[TypedTag[String]]),
   )
 
   def jsLibs: List[Tag] = List(

@@ -13,7 +13,7 @@ object Router extends cask.MainRoutes {
   @cask.post("/api", subpath = true)
   def routeApi(req: cask.Request) =
     RPC.wire(
-      api.Mortgage.API.monthlyPayments ~~> services.MortgageApiImpl.payments,
+      api.Mortgage.API.schedule ~~> services.MortgageApiImpl.schedule,
       api.Mortgage.API.combine ~~> Function.tupled(services.MortgageApiImpl.combine),
     )(req)
 
