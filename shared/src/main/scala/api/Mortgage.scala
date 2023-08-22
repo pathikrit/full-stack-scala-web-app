@@ -9,7 +9,7 @@ object Mortgage {
   // TODO: Validator here
 
   object API {
-    val schedule = new RPC[Mortgage, Seq[Payment]]("/mortgage/schedule")
+    val payments = new RPC[Mortgage, Seq[Payment]]("/mortgage/payments")
     val combine  = new RPC[(Mortgage, Mortgage), Mortgage]("/mortgage/combine")
   }
 }

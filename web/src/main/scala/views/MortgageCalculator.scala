@@ -6,8 +6,9 @@ import scala.annotation.nowarn
 import scalajs.js.annotation.JSExportTopLevel
 import org.scalajs.dom.raw._
 import scalatags.Text.{all => t}
-
 import io.udash.wrappers.jquery.{jQ => $, _}
+
+import java.text.DecimalFormat
 
 @JSExportTopLevel("mortgage_calculator")
 object MortgageCalculator extends framework.Page("mortgage_calculator") {
@@ -36,29 +37,28 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
 
   @nowarn
   def calc(element: Element, event: JQueryEvent) = {
+    val format = new DecimalFormat("$ #.00");
     import api.Mortgage
-    $("#output").html(
-      table(
-        tr(
-          th("Balance"),
-          th("Payment"),
-          th("Principal"),
-          th("Interest")
-        ),
-        `class` := "table table-striped"
-      ).render)
+    $("#output").html(table(`class` := "table table-striped font-monospace")(tr(
+      th("#"),
+      th("Balance"),
+      th("Payment"),
+      th("Principal"),
+      th("Interest"))
+    ).render)
     for {
       amount <- $("#loan").value().asInstanceOf[String].toIntOption
       apr    <- $("#apr").value().asInstanceOf[String].toFloatOption
       years  <- $("#years").value().asInstanceOf[String].toIntOption
       mortgage = Mortgage(amount = amount, apr = apr, years = years)
-      payments <- Mortgage.API.schedule(mortgage)
-      payment <- payments
-    } $("#output").append(tr(
-      td(payment.balance),
-      td(payment.payment),
-      td(payment.principal),
-      td(payment.interest)
+      payments <- Mortgage.API.payments(mortgage)
+      (payment, row) <- payments.zipWithIndex
+    } $("#output tr:last").after(tr(
+      td(row+1),
+      td(format.format(payment.balance)),
+      td(format.format(payment.payment)),
+      td(format.format(payment.principal)),
+      td(format.format(payment.interest)),
     ).render)
   }
 }

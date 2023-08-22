@@ -3,7 +3,7 @@ package services
 import api.{Mortgage, Payment}
 
 object MortgageApiImpl {
-  def schedule(mortgage: Mortgage): Seq[Payment] = {
+  def payments(mortgage: Mortgage): Seq[Payment] = {
     println(s"schedule($mortgage)")
     val r              = mortgage.apr / 100 / 12
     val n              = 12 * mortgage.years
