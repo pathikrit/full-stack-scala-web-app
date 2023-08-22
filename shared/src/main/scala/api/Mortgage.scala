@@ -14,7 +14,9 @@ object Mortgage {
   }
 }
 
-case class Payment(principal: Double, interest: Double, balance: Double)
+case class Payment(principal: Double, interest: Double, balance: Double) {
+  val payment = principal + interest
+}
 object Payment {
   implicit val rw: ReadWriter[Payment] = macroRW
 }

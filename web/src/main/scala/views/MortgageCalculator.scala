@@ -15,13 +15,13 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     div(`class` := "container card w-25 mt-5 p-3")(
       h3("Mortgage Calculator"),
       t.form(t.id := "calculator")(
-        input("Loan Amount ($)", id = "loan", default = 1e6.toInt),
-        input("APR (%)", id = "apr", default = 5),
-        input("Mortgage Period (years)", id = "years", default = 30),
+        input(label = "Loan Amount ($)", id = "loan", default = 1e6.toInt),
+        input(label = "APR (%)", id = "apr", default = 5),
+        input(label = "Mortgage Period (years)", id = "years", default = 30),
         button("Calculate", id := "calc_payments", `type` := "button", `class` := "btn btn-primary"),
-        tag("output")(id       := "output"),
       ),
     ),
+    div(id       := "output", `class` := "container"),
   )
 
   def input(label: String, id: String, default: Int): Tag =
@@ -37,12 +37,28 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
   @nowarn
   def calc(element: Element, event: JQueryEvent) = {
     import api.Mortgage
+    $("#output").html(
+      table(
+        tr(
+          th("Balance"),
+          th("Payment"),
+          th("Principal"),
+          th("Interest")
+        ),
+        `class` := "table table-striped"
+      ).render)
     for {
       amount <- $("#loan").value().asInstanceOf[String].toIntOption
       apr    <- $("#apr").value().asInstanceOf[String].toFloatOption
       years  <- $("#years").value().asInstanceOf[String].toIntOption
       mortgage = Mortgage(amount = amount, apr = apr, years = years)
-      res <- Mortgage.API.schedule(mortgage)
-    } $("#output").text(res.mkString(","))
+      payments <- Mortgage.API.schedule(mortgage)
+      payment <- payments
+    } $("#output").append(tr(
+      td(payment.balance),
+      td(payment.payment),
+      td(payment.principal),
+      td(payment.interest)
+    ).render)
   }
 }
