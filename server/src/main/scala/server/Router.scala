@@ -14,7 +14,7 @@ object Router extends cask.MainRoutes {
   def routeApi(req: cask.Request) =
     RPC.wire(
       api.Mortgage.API.payments ~~> services.MortgageApiImpl.payments,
-      api.Mortgage.API.combine ~~> Function.tupled(services.MortgageApiImpl.combine),
+      api.Mortgage.API.refinancePenalty ~~> Function.tupled(services.MortgageApiImpl.refinancePenalty),
     )(req)
 
   initialize()

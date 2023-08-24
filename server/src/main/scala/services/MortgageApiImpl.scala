@@ -15,8 +15,8 @@ object MortgageApiImpl {
     (1 to n).map(i => Payment(principal = principal(i), interest = interest(i), balance = balance(i)))
   }
 
-  def combine(a: Mortgage, b: Mortgage): Mortgage = {
-    println(s"combine($a, $b)")
-    a
+  def refinancePenalty(mortgage: Mortgage, newApr: Double): Double = {
+    println(s"refinance($mortgage, $newApr)")
+    0
   }
 }

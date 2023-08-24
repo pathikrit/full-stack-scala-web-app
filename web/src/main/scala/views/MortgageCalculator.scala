@@ -9,6 +9,7 @@ import scalatags.Text.{all => t}
 import io.udash.wrappers.jquery.{jQ => $, _}
 
 import java.text.DecimalFormat
+//TODO: import framework.JsRead._
 
 @JSExportTopLevel("mortgage_calculator")
 object MortgageCalculator extends framework.Page("mortgage_calculator") {
@@ -19,7 +20,9 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
         input(label = "Loan Amount ($)", id = "loan", default = 1e6.toInt),
         input(label = "APR (%)", id = "apr", default = 5),
         input(label = "Mortgage Period (years)", id = "years", default = 30),
-        button("Calculate", id := "calc_payments", `type` := "button", `class` := "btn btn-primary"),
+        input(label = "New APR", id = "new_apr", default = 3),
+        button("Calculate", id := "calc_payments", `type` := "button", `class` := "btn btn-primary m-2"),
+        button("Refinance?", id := "refinance", `type` := "button", `class` := "btn btn-secondary m-2"),
       ),
     ),
     div(id       := "output", `class` := "container"),

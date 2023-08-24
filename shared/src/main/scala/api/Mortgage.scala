@@ -10,7 +10,7 @@ object Mortgage {
 
   object API {
     val payments = new RPC[Mortgage, Seq[Payment]]("/mortgage/payments")
-    val combine  = new RPC[(Mortgage, Mortgage), Mortgage]("/mortgage/combine")
+    val refinancePenalty  = new RPC[(Mortgage, Double), Double]("/mortgage/refinance")
   }
 }
 
