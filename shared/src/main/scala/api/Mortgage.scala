@@ -9,8 +9,8 @@ object Mortgage {
   // TODO: Validator here
 
   object API {
-    val payments = new RPC[Mortgage, Seq[Payment]]("/mortgage/payments")
-    val refinancePenalty  = new RPC[(Mortgage, Double), Double]("/mortgage/refinance")
+    val payments         = new RPC[Mortgage, Seq[Payment]]("/mortgage/payments")
+    val refinancePenalty = new RPC[(Mortgage, Double), Double]("/mortgage/refinance")
   }
 }
 

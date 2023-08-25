@@ -65,3 +65,12 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     ).render)
   }
 }
+
+
+/*
+ * Mon, Aug 28: FE (ScalaJs Tour) + FE Dependency management
+ * Tue, Aug 29: RPC
+ * Wed, Aug 30: BE: Server
+ * Thu, Sep  1: BE: Shared
+ * Fri, Sep  2: ScalaCSS + Tooling
+ */
