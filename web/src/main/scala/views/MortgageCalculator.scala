@@ -1,15 +1,13 @@
 package views
 
-import scalatags.Text.all._
-
 import scala.annotation.nowarn
 import scalajs.js.annotation.JSExportTopLevel
 import org.scalajs.dom.raw._
 import scalatags.Text.{all => t}
+import scalatags.Text.all._
 import io.udash.wrappers.jquery.{jQ => $, _}
 
 import java.text.DecimalFormat
-//TODO: import framework.JsRead._
 
 @JSExportTopLevel("mortgage_calculator")
 object MortgageCalculator extends framework.Page("mortgage_calculator") {
@@ -21,11 +19,11 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
         input(label = "APR (%)", id = "apr", default = 5),
         input(label = "Mortgage Period (years)", id = "years", default = 30),
         input(label = "New APR", id = "new_apr", default = 3),
-        button("Calculate", id := "calc_payments", `type` := "button", `class` := "btn btn-primary m-2"),
-        button("Refinance?", id := "refinance", `type` := "button", `class` := "btn btn-secondary m-2"),
+        button("Calculate", id  := "calc_payments", `type` := "button", `class` := "btn btn-primary m-2"),
+        button("Refinance?", id := "refinance", `type`     := "button", `class` := "btn btn-secondary m-2"),
       ),
     ),
-    div(id       := "output", `class` := "container"),
+    div(id := "output", `class` := "container"),
   )
 
   def input(label: String, id: String, default: Int): Tag =
@@ -42,35 +40,33 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
   def calc(element: Element, event: JQueryEvent) = {
     val format = new DecimalFormat("$ #.00");
     import api.Mortgage
-    $("#output").html(table(`class` := "table table-striped font-monospace")(tr(
-      th("#"),
-      th("Balance"),
-      th("Payment"),
-      th("Principal"),
-      th("Interest"))
-    ).render)
+    $("#output").html(
+      table(`class` := "table table-striped font-monospace")(
+        tr(th("#"), th("Balance"), th("Payment"), th("Principal"), th("Interest")),
+      ).render,
+    )
     for {
       amount <- $("#loan").value().asInstanceOf[String].toIntOption
       apr    <- $("#apr").value().asInstanceOf[String].toFloatOption
       years  <- $("#years").value().asInstanceOf[String].toIntOption
       mortgage = Mortgage(amount = amount, apr = apr, years = years)
-      payments <- Mortgage.API.payments(mortgage)
+      payments       <- Mortgage.API.payments(mortgage)
       (payment, row) <- payments.zipWithIndex
-    } $("#output tr:last").after(tr(
-      td(row+1),
-      td(format.format(payment.balance)),
-      td(format.format(payment.payment)),
-      td(format.format(payment.principal)),
-      td(format.format(payment.interest)),
-    ).render)
+    } $("#output tr:last").after(
+      tr(
+        td(row + 1),
+        td(format.format(payment.balance)),
+        td(format.format(payment.payment)),
+        td(format.format(payment.principal)),
+        td(format.format(payment.interest)),
+      ).render,
+    )
   }
 }
 
+//TODO: import framework.JsRead._
 
 /*
- * Mon, Aug 28: FE (ScalaJs Tour) + FE Dependency management
- * Tue, Aug 29: RPC
- * Wed, Aug 30: BE: Server
- * Thu, Sep  1: BE: Shared
- * Fri, Sep  2: ScalaCSS + Tooling
+ * Thu, Sep  1: Misc: ScalaCSS, JsRead
+ * Fri, Sep  2: Tooling (sbt dev)
  */

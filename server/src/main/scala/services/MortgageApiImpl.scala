@@ -16,6 +16,7 @@ object MortgageApiImpl {
   }
 
   def refinancePenalty(mortgage: Mortgage, newApr: Double): Double = {
+    println(s"refinance($mortgage, newApr=$newApr)")
     def totalInterest(m: Mortgage) = payments(m).map(_.interest).sum
     totalInterest(mortgage) - totalInterest(mortgage.copy(apr = newApr))
   }

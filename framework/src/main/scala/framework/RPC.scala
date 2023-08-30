@@ -7,7 +7,7 @@ import upickle.default._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-class RPC[I: ReadWriter, O: ReadWriter](path: String) { self =>
+class RPC[I: ReadWriter, O: ReadWriter](path: String) {
   val fragments = path.stripPrefix("/").stripSuffix("/").split("/").toSeq
 
   def inputValidator: Validation[I] = Validation.empty
@@ -45,11 +45,13 @@ class RPC[I: ReadWriter, O: ReadWriter](path: String) { self =>
 }
 
 object RPC {
-  type RequestHandler = PartialFunction[cask.Request, cask.Response[ujson.Value]]
+  import cask.{Request, Response}
+
+  type RequestHandler = PartialFunction[Request, Response[ujson.Value]]
 
   def error(statusCode: StatusCode, errors: List[String] = Nil) =
     cask.Response(data = ujson.Obj("errors" -> errors), statusCode = statusCode.code)
 
-  def wire(handlers: RequestHandler*): cask.Request => cask.Response[ujson.Value] =
+  def wire(handlers: RequestHandler*): Request => Response[ujson.Value] =
     handlers.reduce(_ orElse _).orElse(_ => error(StatusCode.NotFound))
 }

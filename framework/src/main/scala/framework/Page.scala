@@ -1,12 +1,8 @@
 package framework
 
-//import io.udash.wrappers.jquery._
-
 import scalajs.js.annotation.JSExport
 import scalatags.Text.all._
-//import scalatags.Text.TypedTag
 import scalacss.DevDefaults._
-//import scalacss.ScalatagsCss._
 
 abstract class Page(name: String) {
   implicit val ec = scala.concurrent.ExecutionContext.global
@@ -27,7 +23,6 @@ abstract class Page(name: String) {
 
   def cssLibs: List[Tag] = List(
     JsLibs.bootstrap.css,
-    // styles.map(_.render[TypedTag[String]]),
   )
 
   def jsLibs: List[Tag] = List(
@@ -46,6 +41,7 @@ abstract class Page(name: String) {
     meta(charset := "utf-8"),
     meta(attr("name") := "viewport", content := kv("width" -> "device-width", "initial-scale" -> "1")), // required by Bootstrap
     cssLibs,
+    //css(styles.map(_.render))
   )
 
   def renderBody: Tag
