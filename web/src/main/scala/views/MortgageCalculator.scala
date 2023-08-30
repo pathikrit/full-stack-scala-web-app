@@ -38,6 +38,8 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
 
   @nowarn
   def calc(element: Element, event: JQueryEvent) = {
+    import framework.JsRead._
+
     val format = new DecimalFormat("$ #.00");
     import api.Mortgage
     $("#output").html(
@@ -46,9 +48,9 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
       ).render,
     )
     for {
-      amount <- $("#loan").value().asInstanceOf[String].toIntOption
-      apr    <- $("#apr").value().asInstanceOf[String].toFloatOption
-      years  <- $("#years").value().asInstanceOf[String].toIntOption
+      amount <- $("#loan").value().as[Int]
+      apr    <- $("#apr").value().as[Double]
+      years  <- $("#years").value().as[Int]
       mortgage = Mortgage(amount = amount, apr = apr, years = years)
       payments       <- Mortgage.API.payments(mortgage)
       (payment, row) <- payments.zipWithIndex
@@ -64,9 +66,8 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
   }
 }
 
-//TODO: import framework.JsRead._
 
 /*
- * Thu, Sep  1: Misc: ScalaCSS, JsRead
- * Fri, Sep  2: Tooling (sbt dev)
+ * Wed, Aug 30: ScalaCSS
+ * Thu, Sep  1: code review + Screenshot + 2nd API
  */

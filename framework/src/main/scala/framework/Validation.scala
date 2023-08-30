@@ -23,9 +23,6 @@ case class Validation[A](rules: Map[String, A => Boolean]) {
 object Validation {
   type Result[A] = Either[List[String], A]
 
-  def uniqueBy[A, B](as: Iterable[A])(f: A => B): Boolean =
-    as.groupBy(f).values.forall(_.sizeCompare(1) == 0)
-
   def empty[A]: Validation[A] =
     Validation(Map.empty[String, A => Boolean])
 
