@@ -66,8 +66,6 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
   }
 }
 
-
 /*
- * Wed, Aug 30: ScalaCSS
- * Thu, Sep  1: code review + Screenshot + 2nd API
+ * Thu, Sep  1: code review + 2nd API
  */
