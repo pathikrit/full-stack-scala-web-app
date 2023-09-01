@@ -1,11 +1,12 @@
 package views
 
-import scala.annotation.nowarn
 import scalajs.js.annotation.JSExportTopLevel
 import org.scalajs.dom.raw._
 import scalatags.Text.{all => t}
 import scalatags.Text.all._
 import io.udash.wrappers.jquery.{jQ => $, _}
+
+import scala.annotation.nowarn
 
 import java.text.DecimalFormat
 

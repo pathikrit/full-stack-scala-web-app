@@ -1,7 +1,7 @@
 Full Stack Scala [![Tests](https://github.com/pathikrit/full-stack-scala-web-app/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/pathikrit/full-stack-scala-web-app/actions/workflows/ci.yml)
 ---
 
-This repository contains code for the [Full Stack Scala Web App Talk](https://scaladays.org/madrid-2023/full-stack-scala-web-application)
+This repository contains code for the [Full Stack Scala Web App Talk](https://scaladays.org/madrid-2023/full-stack-scala-web-application) ([slides](https://slides.com/pathikrit/full-stack-scala))
 
 To run this code:
 ```shell

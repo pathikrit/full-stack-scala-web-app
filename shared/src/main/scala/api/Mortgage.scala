@@ -1,7 +1,8 @@
 package api
 
-import framework.RPC
 import upickle.default._
+
+import framework.RPC
 
 case class Mortgage(amount: Double, apr: Double, years: Int)
 object Mortgage {

@@ -1,6 +1,7 @@
 package framework
 
-import scala.scalajs.js.|
+import scalajs.js.|
+
 import scala.util.Try
 
 trait JsRead[A] { self =>
