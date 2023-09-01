@@ -71,14 +71,13 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
   def calculate_refinance(element: Element, event: JQueryEvent) = {
     for {
       amount <- $("#loan").value().as[Int]
-      apr <- $("#apr").value().as[Double]
-      years <- $("#years").value().as[Int]
+      apr    <- $("#apr").value().as[Double]
+      years  <- $("#years").value().as[Int]
       newApr <- $("#new_apr").value().as[Double]
       mortgage = Mortgage(amount = amount, apr = apr, years = years)
       penalty <- Mortgage.API.refinancePenalty(mortgage, newApr)
     } $("#output").html(
-      div(`class` := "container")(s"You will save ${moneyFormat.format(penalty)} over $years years in interest").render
+      div(`class` := "container")(s"You will save ${moneyFormat.format(penalty)} over $years years in interest").render,
     )
   }
 }
-

@@ -25,7 +25,7 @@ abstract class Page(name: String) {
 
   def cssLibs: List[Modifier] = List(
     JsLibs.bootstrap.css,
-    styles.head.render[TypedTag[String]]
+    styles.head.render[TypedTag[String]],
   )
 
   def jsLibs: List[Tag] = List(
