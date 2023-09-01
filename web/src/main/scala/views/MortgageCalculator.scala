@@ -9,12 +9,15 @@ import io.udash.wrappers.jquery.{jQ => $, _}
 
 import java.text.DecimalFormat
 
+import framework.JsRead._
+import api.Mortgage
+
 @JSExportTopLevel("mortgage_calculator")
 object MortgageCalculator extends framework.Page("mortgage_calculator") {
   override def renderBody = body(
     div(`class` := "container card w-25 mt-5 p-3")(
       h3("Mortgage Calculator"),
-      t.form(t.id := "calculator")(
+      form(t.id := "calculator")(
         input(label = "Loan Amount ($)", id = "loan", default = 1e6.toInt),
         input(label = "APR (%)", id = "apr", default = 5),
         input(label = "Mortgage Period (years)", id = "years", default = 30),
@@ -33,15 +36,14 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     )
 
   override def init() = {
-    $("#calc_payments").on("click", calc)
+    $("#calc_payments").on("click", calculate_payments)
+    $("#refinance").on("click", calculate_refinance)
   }
 
-  @nowarn
-  def calc(element: Element, event: JQueryEvent) = {
-    import framework.JsRead._
+  val moneyFormat = new DecimalFormat("$ #.00")
 
-    val format = new DecimalFormat("$ #.00");
-    import api.Mortgage
+  @nowarn
+  def calculate_payments(element: Element, event: JQueryEvent) = {
     $("#output").html(
       table(`class` := "table table-striped font-monospace")(
         tr(th("#"), th("Balance"), th("Payment"), th("Principal"), th("Interest")),
@@ -57,15 +59,26 @@ object MortgageCalculator extends framework.Page("mortgage_calculator") {
     } $("#output tr:last").after(
       tr(
         td(row + 1),
-        td(format.format(payment.balance)),
-        td(format.format(payment.payment)),
-        td(format.format(payment.principal)),
-        td(format.format(payment.interest)),
+        td(moneyFormat.format(payment.balance)),
+        td(moneyFormat.format(payment.payment)),
+        td(moneyFormat.format(payment.principal)),
+        td(moneyFormat.format(payment.interest)),
       ).render,
+    )
+  }
+
+  @nowarn
+  def calculate_refinance(element: Element, event: JQueryEvent) = {
+    for {
+      amount <- $("#loan").value().as[Int]
+      apr <- $("#apr").value().as[Double]
+      years <- $("#years").value().as[Int]
+      newApr <- $("#new_apr").value().as[Double]
+      mortgage = Mortgage(amount = amount, apr = apr, years = years)
+      penalty <- Mortgage.API.refinancePenalty(mortgage, newApr)
+    } $("#output").html(
+      div(`class` := "container")(s"You will save ${moneyFormat.format(penalty)} over $years years in interest").render
     )
   }
 }
 
-/*
- * Thu, Sep  1: code review + 2nd API
- */
