@@ -11,3 +11,8 @@ sbt dev
 ```
 
 Then open <http://localhost:8080> in your browser
+
+Recordings of this talk:
+---
+1. [Scala Days Madrid 2023](https://www.youtube.com/watch?v=WXwYfy4IbZM)
+2. [Scale by the Bay 2023](TBD)
